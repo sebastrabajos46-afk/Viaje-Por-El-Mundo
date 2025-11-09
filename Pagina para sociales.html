@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word🌍</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2300b4d8;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%2390e0ef;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23grad)'/%3E%3Cpath d='M25 30 Q20 25 15 30 L18 35 Q20 32 22 35 L25 30' fill='%2334d399'/%3E%3Cpath d='M75 30 Q80 25 85 30 L82 35 Q80 32 78 35 L75 30' fill='%2334d399'/%3E%3Cpath d='M20 55 Q15 50 10 55 L13 60 Q15 57 17 60 L20 55' fill='%2334d399'/%3E%3Cpath d='M80 55 Q85 50 90 55 L87 60 Q85 57 83 60 L80 55' fill='%2334d399'/%3E%3Cpath d='M35 75 Q30 80 25 75 L28 70 Q30 73 32 70 L35 75' fill='%2334d399'/%3E%3Cpath d='M65 75 Q70 80 75 75 L72 70 Q70 73 68 70 L65 75' fill='%2334d399'/%3E%3Cpath d='M42 35 Q35 32 35 40 Q35 45 40 47 Q45 49 48 47 Q50 46 50 50 Q50 55 45 57 Q40 59 35 57 Q30 55 28 50' stroke='white' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M55 35 Q62 32 62 40 Q62 45 57 47 Q52 49 49 47' stroke='white' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #00b4d8 0%, #90e0ef 50%, #ffd166 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1em;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .search-bar button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .search-bar button:hover {
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .categories {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .category-btn {
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 1.05em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: white;
+            color: #06b6d4;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .blog-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 50%, #fbbf24 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-image::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.2) 0%, transparent 60%);
+        }
+
+        .blog-content {
+            padding: 25px;
+        }
+
+        .blog-category {
+            display: inline-block;
+            background: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
+            color: white;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .blog-title {
+            font-size: 1.5em;
+            margin: 10px 0;
+            color: #1e293b;
+        }
+
+        .blog-excerpt {
+            color: #64748b;
+            line-height: 1.7;
+            margin: 15px 0;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.9em;
+            color: #94a3b8;
+        }
+
+        .read-more {
+            color: #06b6d4;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .read-more:hover {
+            color: #0ea5e9;
+            gap: 10px;
+        }
+
+        .gallery-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .gallery-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #f472b6 0%, #a78bfa 50%, #60a5fa 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5em;
+        }
+
+        .gallery-image-real {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .gallery-out-service {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .gallery-out-service .icon {
+            font-size: 6em;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .gallery-out-service .text {
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            padding: 0 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+        }
+
+        .gallery-out-service .subtitle {
+            color: rgba(255,255,255,0.95);
+            font-size: 1em;
+            font-weight: 500;
+            text-align: center;
+            padding: 0 40px;
+            line-height: 1.6;
+            max-width: 700px;
+        }
+
+        .gallery-out-service .coming-soon {
+            color: white;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-top: 15px;
+            padding: 12px 30px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .gallery-card-centered {
+            grid-column: 1 / -1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .gallery-title {
+            padding: 20px;
+            text-align: center;
+            font-size: 1.3em;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .map-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .map-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .map-container {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .map-card:hover .map-container {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .map-click-hint {
+            position: absolute;
+            bottom: 15px;
+            background: rgba(255,255,255,0.95);
+            color: #065f46;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.25em;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .map-info {
+            padding: 20px;
+        }
+
+        .map-title {
+            font-size: 1.4em;
+            color: #1e293b;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .map-coords {
+            color: #64748b;
+            font-size: 0.95em;
+        }
+
+        .about-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            line-height: 1.8;
+        }
+
+        .about-card h2 {
+            color: #06b6d4;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .about-card h3 {
+            color: #0ea5e9;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .about-card p {
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+
+        .about-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .about-card li {
+            color: #64748b;
+            margin-bottom: 10px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .about-card li::before {
+            content: '✈️';
+            position: absolute;
+            left: 0;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 40px 20px;
+            margin-top: 40px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌍 Aventuras por el Mundo ✈️</h1>
+            <p>Descubre nuestras experiencias y viajes increíbles</p>
+            
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Buscar destinos...">
+                <button onclick="searchPosts()">🔍 Buscar</button>
+            </div>
+        </header>
+
+        <div class="categories">
+            <button class="category-btn active" onclick="filterCategory('viajes')">✈️ Viajes</button>
+            <button class="category-btn" onclick="filterCategory('galeria')">📸 Galería</button>
+            <button class="category-btn" onclick="filterCategory('mapas')">🗺️ Mapas</button>
+            <button class="category-btn" onclick="filterCategory('acerca')">📖 Acerca</button>
+        </div>
+
+        <div class="blog-grid" id="blogGrid"></div>
+
+        <footer>
+            <p>🌟 Aventuras por el Mundo 2025 | Viviendo experiencias únicas 🌟</p>
+        </footer>
+    </div>
+
+    <script>
+    
+        const categoriesData = {
+            
+            'viajes': [
+                {
+                    title: "Corea Del Sur",
+                    lugar: "Asia, Corea Del Sur",
+                    excerpt: "Fuimos a Corea y visitamos varios lugares importantes. Primero fuimos a la Torre N de Seúl, que según Sebastián se empezó a construir en 1969 y terminó en 1971. Luego recorrimos el pueblo tradicional Bukchon Hanok Village, un barrio histórico que existe desde 1392. Después visitamos JYP Entertainment, una de las compañías más grandes del K-Pop, fundada en 1997 por Park Jin-young. También fuimos a Lotte World, un famoso complejo de entretenimiento con parque interior y exterior. Más tarde viajamos a la isla de Jeju, una isla volcánica donde Sebastián se emocionó al ver el volcán más grande de Corea. Finalmente conocimos el puente Banpo, ubicado sobre el río Han, y Sebastián recordó que conecta dos distritos de Seúl. Al final, todos regresaron felices de Corea.",
+                    actividades: "Pueblo Bukchon Hanok Village y fuimos a la iconiconica Torre N Seul en el parque Namsan, la Isa de JeJu, JYP (Empresa de sellos discograficos), Seroaksan, el puente Banpo.",
+                    date: "Enero 2025",
+                    author: "S.L.G",
+                    icon: "🍙"
+                },
+                {
+                    title: "Japon",
+                    lugar: "Asia, Japon",
+                    excerpt: "En nuestro viaje por Japón visitamos Kioto, donde probamos la experiencia de ser maiko y tomamos clases en una escuela. Camino al Pabellón Dorado encontramos una máquina que nos llevó al año 1603, al shogunato Tokugawa, donde incluso el shōgun nos regaló gyozas. Luego sí llegamos al Pabellón Dorado, creado en 1397, y seguimos hacia el Monte Fuji, el pico más alto de Japón. Sebastián intentó subirlo pero cayó, mientras Laura compró mochis y Gabriela un peluche de Kirby. Terminamos el viaje en el famoso santuario de Miyajima, construido sobre el agua.",
+                    actividades: "Kioto , Shogunati Tokukagawa, El pabellón dorado, Monte Fuji, Santuario de Itsukushima",
+                    date: "Febrero 2025",
+                    author: "S.G.L",
+                    icon: "🍡"
+                },
+                {
+                    title: "Colombia",
+                    lugar: "America Del Norte, Colombia",
+                    excerpt: "Visitamos la Isla de los Micos en Leticia, donde los monos jugaron con nosotros y uno casi se lleva la cámara. Luego subimos a Monserrate a pie. Después fuimos a Santa Marta y disfrutamos Playa Blanca entre empujones, risas y luces en el mar. También visitamos el mar de los 7 colores en San Andrés, donde Velásquez casi se ahoga, pero lo rescatamos, y luego corrimos por culpa de los cangrejos. Terminamos el viaje en Armenia, donde nos quedamos en una finca y tomamos mucho café.",
+                    actividades: "Parque Tayrona, Cabo San Juan, Playa Cristal, Centro HistóricoIsla de los monos titi , Monserrate,  Santa Marta, Rio de los 7 colores, Armenia",
+                    date: "Marzo 2025",
+                    author: "S.L.G",
+                    icon: "🐒"
+                }
+            ],
+            
+
+            'galeria': [
+                {
+                    lugar: "Galería Temporalmente Fuera de Servicio / Gallery Temporarily Out of Service",
+                    fuera: true
+                }
+            ],
+            
+            // CATEGORÍA: MAPAS (Mapas interactivos con ubicaciones)
+            // IMPORTANTE: Cambia las coordenadas por las reales de tus lugares
+            'mapas': [
+                {
+                    lugar: "JYP- Coera Del Sur",
+                    linkMaps: "https://maps.app.goo.gl/EgmrUXZq7jyHU3ur5",
+                    icon: "📍"
+                },
+                {
+                    lugar: "Monte Fuji-Japon ",
+                    linkMaps: "https://maps.app.goo.gl/atUHhdjcv1QdWynq9",
+                    icon: "📍"
+                },
+                {
+                    lugar: "Isla De Los Micos, Colombia",
+                    linkMaps: "https://maps.app.goo.gl/TrNT3DSN4CjoLBAu8",
+                    icon: "📍"
+                },
+            ],
+            
+            // CATEGORÍA: ACERCA (Información del blog)
+            'acerca': []
+        };
+
+        let currentCategory = 'viajes';
+
+        function renderViajes(posts) {
+            const grid = document.getElementById('blogGrid');
+            grid.innerHTML = '';
+
+            if (posts.length === 0) {
+                renderEmptyState('viajes');
+                return;
+            }
+
+            posts.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'blog-card';
+                card.innerHTML = `
+                    <div class="blog-image">${post.icon}</div>
+                    <div class="blog-content">
+                        <span class="blog-category">✈️ Viajes</span>
+                        <h2 class="blog-title">${post.title}</h2>
+                        <p style="color: #06b6d4; font-weight: 600; margin: 10px 0;">📍 ${post.lugar}</p>
+                        <p class="blog-excerpt">${post.excerpt}</p>
+                        <p style="color: #0ea5e9; font-weight: 500; margin: 15px 0;">
+                            🎯 Visitamos: ${post.actividades}
+                        </p>
+                        <div class="blog-meta">
+                            <span>👭 ${post.author}</span>
+                            <span>📅 ${post.date}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderGaleria(items) {
+            const grid = document.getElementById('blogGrid');
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                renderEmptyState('galeria');
+                return;
+            }
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                
+                // Si es una card de "fuera de servicio"
+                if (item.fuera) {
+                    card.className = 'gallery-card gallery-card-centered';
+                    card.innerHTML = `
+                        <div class="gallery-out-service">
+                            <div class="icon">🚧</div>
+                            <div class="text">FUERA DE SERVICIO / OUT OF SERVICE</div>
+                            <div class="subtitle">
+                                Esta categoría se encuentra temporalmente fuera de servicio debido a que las imágenes aún no han sido cargadas en la página web.
+                                <br><br>
+                                <em>This category is temporarily out of service because the images have not yet been uploaded to the website.</em>
+                            </div>
+                            <div class="coming-soon">Próximamente / Coming Soon...</div>
+                        </div>
+                        <div class="gallery-title" style="font-size: 1.3em; padding: 25px; color: #64748b;">⚠️ ${item.lugar}</div>
+                    `;
+                } else {
+                    // Card normal con foto
+                    card.className = 'gallery-card';
+                    card.innerHTML = `
+                        <img src="imagenes/${item.foto}" alt="${item.lugar}" class="gallery-image-real" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="gallery-image" style="display: none;">📷</div>
+                        <div class="gallery-title">📍 ${item.lugar}</div>
+                    `;
+                }
+                
+                grid.appendChild(card);
+            });
+        }
+
+        function renderMapas(maps) {
+            const grid = document.getElementById('blogGrid');
+            grid.innerHTML = '';
+
+            if (maps.length === 0) {
+                renderEmptyState('mapas');
+                return;
+            }
+
+            maps.forEach(map => {
+                const card = document.createElement('a');
+                card.className = 'map-card';
+                card.href = map.linkMaps;
+                card.target = '_blank';
+                card.rel = 'noopener noreferrer';
+                card.innerHTML = `
+                    <div class="map-container">
+                        🗺️
+                        <div class="map-click-hint">👆 Clic para ver en Google Maps</div>
+                    </div>
+                    <div class="map-info">
+                        <div class="map-title">${map.icon} ${map.lugar}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderAcerca() {
+            const grid = document.getElementById('blogGrid');
+            grid.innerHTML = '';
+
+            const card = document.createElement('div');
+            card.className = 'about-card';
+            card.innerHTML = `
+                <h2>📖 Acerca de Este Blog</h2>
+                <p>Bienvenidos a nuestro diario de aventuras. Somos un grupo de amigos apasionados por explorar el mundo, descubrir nuevos lugares y crear recuerdos inolvidables juntas.</p>
+                
+                <h3>✨ Nuestra Misión</h3>
+                <p>Compartir nuestras experiencias de viaje, inspirar a otros a explorar y documentar los lugares más hermosos que hemos visitado. Cada viaje es una nueva historia, cada destino una aventura única.</p>
+                
+                <h3>📚 Fuentes y Referencias</h3>
+                <p>La información compartida en este blog proviene de nuestras experiencias personales y está complementada con datos de:</p>
+                <ul>
+                    <li>Guías oficiales de turismo de Colombia</li>
+                    <li>ProColombia - Entidad oficial de promoción turística</li>
+                    <li>Páginas web oficiales de parques nacionales</li>
+                    <li>Testimonios y experiencias personales documentadas</li>
+                    <li>Google Maps para coordenadas y ubicaciones exactas</li>
+                    <li>Recomendaciones de habitantes locales</li>
+                </ul>
+                
+                <h3>🌟 Nuestros Valores</h3>
+                <p>Creemos en el turismo responsable, el respeto por las culturas locales y la preservación del medio ambiente. Cada destino que visitamos lo hacemos con conciencia y gratitud.</p>
+                
+                <h3>📧 Contacto</h3>
+                <p>Si tienes preguntas sobre nuestros viajes o quieres recomendaciones personalizadas, ¡no dudes en contactarnos!</p>
+            `;
+            grid.appendChild(card);
+        }
+
+        function renderEmptyState(categoryName) {
+            const grid = document.getElementById('blogGrid');
+            const emptyCard = document.createElement('div');
+            emptyCard.className = 'blog-card';
+            emptyCard.style.gridColumn = '1 / -1';
+            emptyCard.style.maxWidth = '600px';
+            emptyCard.style.margin = '0 auto';
+            emptyCard.innerHTML = `
+                <div class="blog-image" style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);">🚧</div>
+                <div class="blog-content" style="text-align: center; padding: 40px 25px;">
+                    <span class="blog-category" style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);">🚧 En construcción</span>
+                    <h2 class="blog-title">Sección en Construcción</h2>
+                    <p class="blog-excerpt">Esta sección está en construcción. Pronto tendremos contenido increíble para ti en <strong>${categoryName}</strong>.</p>
+                    <div style="margin-top: 20px; font-size: 3em;">🔨</div>
+                    <p style="color: #94a3b8; margin-top: 15px; font-size: 0.9em;">Vuelve pronto para descubrir más aventuras</p>
+                </div>
+            `;
+            grid.appendChild(emptyCard);
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            switch(category) {
+                case 'viajes':
+                    renderViajes(categoriesData.viajes);
+                    break;
+                case 'galeria':
+                    renderGaleria(categoriesData.galeria);
+                    break;
+                case 'mapas':
+                    renderMapas(categoriesData.mapas);
+                    break;
+                case 'acerca':
+                    renderAcerca();
+                    break;
+            }
+        }
+
+        function searchPosts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            
+            if (currentCategory === 'viajes') {
+                const filtered = categoriesData.viajes.filter(post => 
+                    post.title.toLowerCase().includes(query) ||
+                    post.lugar.toLowerCase().includes(query) ||
+                    post.excerpt.toLowerCase().includes(query) ||
+                    post.actividades.toLowerCase().includes(query)
+                );
+                renderViajes(filtered);
+            } else if (currentCategory === 'galeria') {
+                const filtered = categoriesData.galeria.filter(item =>
+                    item.lugar.toLowerCase().includes(query)
+                );
+                renderGaleria(filtered);
+            } else if (currentCategory === 'mapas') {
+                const filtered = categoriesData.mapas.filter(map =>
+                    map.lugar.toLowerCase().includes(query)
+                );
+                renderMapas(filtered);
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchPosts();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', function() {
+            filterCategory('viajes');
+        });
+    </script>
+</body>
+</html>
